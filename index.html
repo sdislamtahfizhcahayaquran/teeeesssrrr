@@ -266,7 +266,7 @@ body{font-family:Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:var
         <div class="fg">
           <label>No. Akta Lahir <span class="req">*</span></label>
           <input type="text" id="no_akta" placeholder="Nomor registrasi akta">
-          <label class="cb" onclick="toggleNoAkta()"><input type="checkbox" id="cb_no_akta"><span>Belum punya akta</span></label>
+          <label class="cb"><input type="checkbox" id="cb_no_akta" onchange="toggleNoAkta()"><span>Belum punya akta</span></label>
         </div>
       </div>
       <div class="row3">
@@ -341,8 +341,8 @@ body{font-family:Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:var
     <div class="sec-hd"><h3>🚗 Transportasi & Bantuan</h3></div>
     <div class="sec-bd">
       <div class="row2">
-        <div class="fg"><label>Alat Transportasi <span class="req">*</span></label><select id="transportasi"><option value="">Pilih</option><option>Jalan Kaki</option><option>Sepeda</option><option>Motor</option><option>Mobil Pribadi</option><option>Angkutan Umum</option><option>Antar Jemput Sekolah</option></select></div>
-        <div class="fg"><label>Jarak ke Sekolah (km) <span class="req">*</span></label><input type="number" id="jarak_sekolah" min="0" step="0.1" placeholder="5" inputmode="decimal"></div>
+        <div class="fg"><label>Alat Transportasi <span class="req">*</span></label><select id="transportasi"><option value="">Pilih</option><option>Jalan Kaki</option><option>Sepeda</option><option>Motor</option><option>Mobil Pribadi</option><option>Angkutan Umum</option><option>Antar Jemput Sekolah</option><option>Ojek Online</option></select></div>
+        <div class="fg"><label>Jarak ke Sekolah (km) <span class="opt">(opsional)</span></label><input type="number" id="jarak_sekolah" min="0" step="0.1" placeholder="5" inputmode="decimal"></div>
       </div>
       <div class="row2">
         <div class="fg"><label>Penerima KPS</label><select id="kps"><option value="Tidak">Tidak</option><option value="Ya">Ya</option></select></div>
@@ -374,8 +374,7 @@ body{font-family:Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:var
       </div>
       <div class="fg">
         <label>Pekerjaan Ayah <span class="opt">(opsional)</span></label>
-        <input type="text" id="pekerjaan_ayah" placeholder="Contoh: Karyawan Swasta" oninput="capsW(this)">
-        <div class="sug-wrap" id="sug-ayah"></div>
+        <select id="pekerjaan_ayah"><option value="">Pilih</option><option>Karyawan Swasta</option><option>Pegawai Negeri Sipil (PNS)</option><option>TNI / Polri</option><option>Wirausaha / Wiraswasta</option><option>Pedagang</option><option>Petani / Nelayan</option><option>Buruh Harian</option><option>Guru / Dosen</option><option>Dokter / Tenaga Medis</option><option>Pengacara / Notaris</option><option>Ibu Rumah Tangga</option><option>Tidak Bekerja</option><option>Pensiunan</option><option>Lainnya</option></select>
       </div>
       <div class="row2">
         <div class="fg"><label>Pendidikan Terakhir <span class="req">*</span></label><select id="pendidikan_ayah"><option value="">Pilih</option><option>Tidak Sekolah</option><option>SD/Sederajat</option><option>SMP/Sederajat</option><option>SMA/Sederajat</option><option>D3</option><option>S1/D4</option><option>S2</option><option>S3</option></select></div>
@@ -400,8 +399,7 @@ body{font-family:Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:var
       </div>
       <div class="fg">
         <label>Pekerjaan Ibu <span class="opt">(opsional)</span></label>
-        <input type="text" id="pekerjaan_ibu" placeholder="Contoh: Ibu Rumah Tangga" oninput="capsW(this)">
-        <div class="sug-wrap" id="sug-ibu"></div>
+        <select id="pekerjaan_ibu"><option value="">Pilih</option><option>Karyawan Swasta</option><option>Pegawai Negeri Sipil (PNS)</option><option>TNI / Polri</option><option>Wirausaha / Wiraswasta</option><option>Pedagang</option><option>Petani / Nelayan</option><option>Buruh Harian</option><option>Guru / Dosen</option><option>Dokter / Tenaga Medis</option><option>Pengacara / Notaris</option><option>Ibu Rumah Tangga</option><option>Tidak Bekerja</option><option>Pensiunan</option><option>Lainnya</option></select>
       </div>
       <div class="row2">
         <div class="fg"><label>Pendidikan Terakhir <span class="req">*</span></label><select id="pendidikan_ibu"><option value="">Pilih</option><option>Tidak Sekolah</option><option>SD/Sederajat</option><option>SMP/Sederajat</option><option>SMA/Sederajat</option><option>D3</option><option>S1/D4</option><option>S2</option><option>S3</option></select></div>
@@ -416,15 +414,35 @@ body{font-family:Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:var
   <div class="sec">
     <div class="sec-hd"><h3><svg width="16" height="16"><use href="#ic-users"/></svg> Data Wali <span style="font-size:10px;font-weight:400;color:var(--tl)">(opsional)</span></h3></div>
     <div class="sec-bd">
-      <label class="cb" onclick="toggleWali()"><input type="checkbox" id="cb_wali"><span>Ada wali selain ayah/ibu</span></label>
-      <div id="wali-form" style="display:none;margin-top:12px">
+      <label class="cb"><input type="checkbox" id="cb_wali" onchange="toggleWali()"><span>Ada wali selain ayah/ibu</span></label>
+      <div id="wali-form" style="display:none;margin-top:14px">
         <div class="row2">
           <div class="fg"><label>Nama Wali <span class="req">*</span></label><input type="text" id="nama_wali" placeholder="Nama lengkap" oninput="capsW(this)"></div>
-          <div class="fg"><label>NIK Wali</label><input type="text" id="nik_wali" placeholder="16 digit" maxlength="16" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')"></div>
+          <div class="fg"><label>NIK Wali <span class="req">*</span></label><input type="text" id="nik_wali" placeholder="16 digit" maxlength="16" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')"></div>
         </div>
         <div class="row2">
-          <div class="fg"><label>Pekerjaan Wali</label><input type="text" id="pekerjaan_wali" placeholder="Pekerjaan" oninput="capsW(this)"></div>
+          <div class="fg"><label>Tempat Lahir Wali <span class="req">*</span></label><input type="text" id="tempat_lahir_wali" placeholder="Kota" oninput="capsW(this)"></div>
+          <div class="fg"><label>Tanggal Lahir Wali <span class="req">*</span></label><input type="date" id="tanggal_lahir_wali" max=""></div>
+        </div>
+        <div class="row2">
+          <div class="fg"><label>Pekerjaan Wali <span class="opt">(opsional)</span></label><select id="pekerjaan_wali"><option value="">Pilih</option><option>Karyawan Swasta</option><option>Pegawai Negeri Sipil (PNS)</option><option>TNI / Polri</option><option>Wirausaha / Wiraswasta</option><option>Pedagang</option><option>Guru / Dosen</option><option>Ibu Rumah Tangga</option><option>Tidak Bekerja</option><option>Pensiunan</option><option>Lainnya</option></select></div>
           <div class="fg"><label>No. HP Wali <span class="req">*</span></label><input type="tel" id="no_hp_wali" placeholder="08xx"></div>
+        </div>
+        <div class="fg">
+          <label>Alamat Wali</label>
+          <label class="cb" style="margin-bottom:8px"><input type="checkbox" id="cb_wali_same" onchange="toggleAlamatWali()"><span>Alamat sama dengan alamat siswa</span></label>
+          <div id="wali-alamat" style="display:none">
+            <div class="fg"><label>Nama Jalan <span class="req">*</span></label><input type="text" id="jalan_wali" placeholder="Jl. ..." oninput="capsW(this)"></div>
+            <div class="row3">
+              <div class="fg"><label>RT</label><input type="text" id="rt_wali" placeholder="008" maxlength="4"></div>
+              <div class="fg"><label>RW</label><input type="text" id="rw_wali" placeholder="005" maxlength="4"></div>
+              <div class="fg"><label>Kelurahan</label><input type="text" id="kelurahan_wali" placeholder="Kelurahan" oninput="capsW(this)"></div>
+            </div>
+            <div class="row2">
+              <div class="fg"><label>Kecamatan</label><input type="text" id="kecamatan_wali" placeholder="Kecamatan" oninput="capsW(this)"></div>
+              <div class="fg"><label>Kota</label><input type="text" id="kota_wali" placeholder="Kota" oninput="capsW(this)"></div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="fg" style="margin-top:12px"><label>Email Wali Murid <span class="req">*</span></label><input type="email" id="email_wali2" placeholder="Sama seperti yang diisi di awal" readonly style="background:#f5f5f5;color:var(--tl)"></div>
@@ -442,19 +460,19 @@ body{font-family:Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:var
       <div class="fg">
         <label>Nama TK / RA Asal <span class="req">*</span></label>
         <input type="text" id="asal_tk" placeholder="TK Islam Tahfizh Cahaya Qur'an" oninput="capsW(this)">
-        <label class="cb" onclick="toggleNoTk()"><input type="checkbox" id="cb_no_tk"><span>Tidak TK / Belum pernah TK</span></label>
+        <label class="cb"><input type="checkbox" id="cb_no_tk" onchange="toggleNoTk()"><span>Tidak TK / Belum pernah TK</span></label>
       </div>
       <div id="tk-detail">
         <div class="row2">
           <div class="fg">
             <label>No. Ijazah TK <span class="req">*</span></label>
             <input type="text" id="no_ijazah_tk" placeholder="Nomor ijazah">
-            <label class="cb" onclick="toggleNoIjazahTk()"><input type="checkbox" id="cb_no_ijazah_tk"><span>Belum ada ijazah</span></label>
+            <label class="cb"><input type="checkbox" id="cb_no_ijazah_tk" onchange="toggleNoIjazahTk()"><span>Belum ada ijazah</span></label>
           </div>
           <div class="fg">
             <label>Tanggal Ijazah TK <span class="req">*</span></label>
             <input type="date" id="tgl_ijazah_tk">
-            <label class="cb" onclick="toggleNoTglIjazahTk()"><input type="checkbox" id="cb_no_tgl_ijazah_tk"><span>Belum ada</span></label>
+            <label class="cb"><input type="checkbox" id="cb_no_tgl_ijazah_tk" onchange="toggleNoTglIjazahTk()"><span>Belum ada</span></label>
           </div>
         </div>
         <div class="fg"><label>Lama Belajar di TK <span class="opt">(opsional)</span></label><select id="lama_belajar_tk"><option value="">Pilih</option><option value="1">1 tahun</option><option value="2">2 tahun</option><option value="3">3 tahun</option></select></div>
@@ -487,25 +505,25 @@ body{font-family:Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:var
           <label>KTP Ayah <span class="req">*</span></label>
           <div class="up-area" id="ua-ktp-ayah"><input type="file" id="f-ktp-ayah" accept="image/*,.pdf" onchange="prevUp('f-ktp-ayah','ktp-ayah')"><div class="up-icon"><svg width="22" height="22" style="color:var(--hm)"><use href="#ic-id"/></svg></div><div class="up-label">Pilih file</div><div class="up-sub">JPG/PNG/PDF · maks 5MB</div></div>
           <div class="up-prev" id="prev-ktp-ayah" style="display:none"></div>
-          <div class="up-wajib">Belum punya? <label class="cb" style="display:inline-flex;margin:0" onclick="toggleBelumDok('ktp-ayah')"><input type="checkbox" id="cb-ktp-ayah"><span>Belum ada</span></label></div>
+          <div class="up-wajib">Belum punya? <label class="cb" style="display:inline-flex;margin:0" onchange="toggleBelumDok('ktp-ayah')"><input type="checkbox" id="cb-ktp-ayah"><span>Belum ada</span></label></div>
         </div>
         <div class="fg">
           <label>KTP Ibu <span class="req">*</span></label>
           <div class="up-area" id="ua-ktp-ibu"><input type="file" id="f-ktp-ibu" accept="image/*,.pdf" onchange="prevUp('f-ktp-ibu','ktp-ibu')"><div class="up-icon"><svg width="22" height="22" style="color:var(--hm)"><use href="#ic-id"/></svg></div><div class="up-label">Pilih file</div><div class="up-sub">JPG/PNG/PDF · maks 5MB</div></div>
           <div class="up-prev" id="prev-ktp-ibu" style="display:none"></div>
-          <div class="up-wajib">Belum punya? <label class="cb" style="display:inline-flex;margin:0" onclick="toggleBelumDok('ktp-ibu')"><input type="checkbox" id="cb-ktp-ibu"><span>Belum ada</span></label></div>
+          <div class="up-wajib">Belum punya? <label class="cb" style="display:inline-flex;margin:0" onchange="toggleBelumDok('ktp-ibu')"><input type="checkbox" id="cb-ktp-ibu"><span>Belum ada</span></label></div>
         </div>
         <div class="fg">
           <label>Akta Kelahiran <span class="req">*</span></label>
           <div class="up-area" id="ua-akta"><input type="file" id="f-akta" accept="image/*,.pdf" onchange="prevUp('f-akta','akta')"><div class="up-icon"><svg width="22" height="22" style="color:var(--hm)"><use href="#ic-scroll"/></svg></div><div class="up-label">Pilih file</div><div class="up-sub">JPG/PNG/PDF · maks 5MB</div></div>
           <div class="up-prev" id="prev-akta" style="display:none"></div>
-          <div class="up-wajib">Belum punya? <label class="cb" style="display:inline-flex;margin:0" onclick="toggleBelumDok('akta')"><input type="checkbox" id="cb-akta"><span>Belum ada</span></label></div>
+          <div class="up-wajib">Belum punya? <label class="cb" style="display:inline-flex;margin:0" onchange="toggleBelumDok('akta')"><input type="checkbox" id="cb-akta"><span>Belum ada</span></label></div>
         </div>
         <div class="fg">
           <label>Kartu Keluarga <span class="req">*</span></label>
           <div class="up-area" id="ua-kk"><input type="file" id="f-kk" accept="image/*,.pdf" onchange="prevUp('f-kk','kk')"><div class="up-icon"><svg width="22" height="22" style="color:var(--hm)"><use href="#ic-family"/></svg></div><div class="up-label">Pilih file</div><div class="up-sub">JPG/PNG/PDF · maks 5MB</div></div>
           <div class="up-prev" id="prev-kk" style="display:none"></div>
-          <div class="up-wajib">Belum punya? <label class="cb" style="display:inline-flex;margin:0" onclick="toggleBelumDok('kk')"><input type="checkbox" id="cb-kk"><span>Belum ada</span></label></div>
+          <div class="up-wajib">Belum punya? <label class="cb" style="display:inline-flex;margin:0" onchange="toggleBelumDok('kk')"><input type="checkbox" id="cb-kk"><span>Belum ada</span></label></div>
         </div>
         <div class="fg">
           <label>KTP Wali <span class="opt">(jika ada wali)</span></label>
@@ -545,7 +563,7 @@ const HDR = {apikey:SB_KEY, Authorization:'Bearer '+SB_KEY};
 
 let tipe = 'baru';
 let curStep = 1;
-const JOBS = ['Karyawan Swasta','Pegawai Negeri Sipil (PNS)','TNI / Polri','Wirausaha / Wiraswasta','Pedagang','Petani / Nelayan','Buruh Harian','Guru / Dosen','Dokter / Tenaga Medis','Pengacara / Notaris','Ibu Rumah Tangga','Tidak Bekerja','Pensiunan','Lainnya'];
+
 
 // Init
 window.addEventListener('DOMContentLoaded', () => {
@@ -553,21 +571,11 @@ window.addEventListener('DOMContentLoaded', () => {
   const m = max18.toISOString().split('T')[0];
   document.getElementById('tanggal_lahir_ayah').max = m;
   document.getElementById('tanggal_lahir_ibu').max = m;
-  buatSug('pekerjaan_ayah','sug-ayah');
-  buatSug('pekerjaan_ibu','sug-ibu');
+
   document.getElementById('email_wali2').value = '';
 });
 
-// Pekerjaan suggestions
-function buatSug(inputId, wrapId) {
-  const wrap = document.getElementById(wrapId);
-  JOBS.forEach(j => {
-    const el = document.createElement('span');
-    el.className = 'sug'; el.textContent = j;
-    el.onclick = () => { document.getElementById(inputId).value = j; };
-    wrap.appendChild(el);
-  });
-}
+
 
 // Tipe siswa
 function setTipe(t) {
@@ -580,20 +588,37 @@ function setTipe(t) {
 
 // Toggle wali
 function toggleWali() {
-  const cb = document.getElementById('cb_wali'); cb.checked = !cb.checked;
+  const cb = document.getElementById('cb_wali');
   document.getElementById('wali-form').style.display = cb.checked?'block':'none';
+  // Set max date for wali
+  if(cb.checked) {
+    const max18 = new Date(); max18.setFullYear(max18.getFullYear()-18);
+    document.getElementById('tanggal_lahir_wali').max = max18.toISOString().split('T')[0];
+  }
+}
+
+// Toggle alamat wali same/beda
+function toggleAlamatWali() {
+  const cb = document.getElementById('cb_wali_same');
+  const waForm = document.getElementById('wali-alamat');
+  if(cb.checked) {
+    // Sama dengan siswa - copy dan sembunyikan form
+    waForm.style.display = 'none';
+  } else {
+    waForm.style.display = 'block';
+  }
 }
 
 // Toggle no akta
 function toggleNoAkta() {
-  const cb = document.getElementById('cb_no_akta'); cb.checked = !cb.checked;
+  const cb = document.getElementById('cb_no_akta');
   const el = document.getElementById('no_akta');
   el.disabled = cb.checked; el.value = cb.checked?'Belum punya akta':''; el.style.background = cb.checked?'#f5f5f5':'';
 }
 
 // Toggle no TK
 function toggleNoTk() {
-  const cb = document.getElementById('cb_no_tk'); cb.checked = !cb.checked;
+  const cb = document.getElementById('cb_no_tk');
   document.getElementById('tk-detail').style.display = cb.checked?'none':'block';
   const el = document.getElementById('asal_tk');
   el.disabled = cb.checked; if(cb.checked) el.value='';
@@ -601,21 +626,21 @@ function toggleNoTk() {
 
 // Toggle no ijazah TK
 function toggleNoIjazahTk() {
-  const cb = document.getElementById('cb_no_ijazah_tk'); cb.checked = !cb.checked;
+  const cb = document.getElementById('cb_no_ijazah_tk');
   const el = document.getElementById('no_ijazah_tk');
   el.disabled = cb.checked; el.value = cb.checked?'Belum ada':''; el.style.background = cb.checked?'#f5f5f5':'';
 }
 function toggleNoTglIjazahTk() {
-  const cb = document.getElementById('cb_no_tgl_ijazah_tk'); cb.checked = !cb.checked;
+  const cb = document.getElementById('cb_no_tgl_ijazah_tk');
   const el = document.getElementById('tgl_ijazah_tk');
   el.disabled = cb.checked; el.value = ''; el.style.background = cb.checked?'#f5f5f5':'';
 }
 
 // Toggle belum dokumen
 function toggleBelumDok(key) {
-  const cb = document.getElementById('cb-'+key); cb.checked = !cb.checked;
+  const cb = document.getElementById('cb-'+key);
   const area = document.getElementById('ua-'+key);
-  if(area) area.style.opacity = cb.checked?'0.4':'1';
+  if(area) { area.style.opacity = cb.checked?'0.4':'1'; area.style.pointerEvents = cb.checked?'none':'auto'; }
 }
 
 // Upload preview
@@ -752,7 +777,7 @@ function validate(step) {
     if(!gv('kota')) return 'Kota/Kabupaten wajib diisi.';
     if(!gv('provinsi')) return 'Provinsi wajib diisi.';
     if(!gv('transportasi')) return 'Alat transportasi wajib dipilih.';
-    if(!gv('jarak_sekolah')) return 'Jarak ke sekolah wajib diisi.';
+
     if(!gv('lat') || !gv('lng')) return 'Koordinat lokasi rumah wajib diisi. Klik tombol "Ambil Lokasi".';
   }
   if(step===4) {
@@ -774,6 +799,9 @@ function validate(step) {
     if(!gv('no_hp_ibu')) return 'No. HP ibu wajib diisi.';
     const adaWali = document.getElementById('cb_wali').checked;
     if(adaWali && !gv('nama_wali')) return 'Nama wali wajib diisi.';
+    if(adaWali && !gv('nik_wali')) return 'NIK wali wajib diisi.';
+    if(adaWali && !gv('tempat_lahir_wali')) return 'Tempat lahir wali wajib diisi.';
+    if(adaWali && !gv('tanggal_lahir_wali')) return 'Tanggal lahir wali wajib diisi.';
     if(adaWali && !gv('no_hp_wali')) return 'No. HP wali wajib diisi.';
   }
   if(step===5) {
@@ -890,8 +918,14 @@ async function submitForm() {
       penghasilan_ibu: gv('penghasilan_ibu'),
       nama_wali: adaWali?gv('nama_wali'):null,
       nik_wali: adaWali?gv('nik_wali'):null,
+      tempat_lahir_wali: adaWali?gv('tempat_lahir_wali'):null,
+      tanggal_lahir_wali: adaWali?(gv('tanggal_lahir_wali')||null):null,
       pekerjaan_wali: adaWali?gv('pekerjaan_wali'):null,
       no_hp_wali: adaWali?gv('no_hp_wali'):null,
+      jalan_wali: adaWali?(document.getElementById('cb_wali_same')?.checked?gv('jalan'):gv('jalan_wali')):null,
+      kelurahan_wali: adaWali?(document.getElementById('cb_wali_same')?.checked?gv('kelurahan'):gv('kelurahan_wali')):null,
+      kecamatan_wali: adaWali?(document.getElementById('cb_wali_same')?.checked?gv('kecamatan'):gv('kecamatan_wali')):null,
+      kota_wali: adaWali?(document.getElementById('cb_wali_same')?.checked?gv('kota'):gv('kota_wali')):null,
     };
 
     // 1. Simpan ke Supabase pendaftaran
