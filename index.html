@@ -318,16 +318,16 @@ body{font-family:Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:var
       <div class="fg">
         <label>Kelurahan/Desa <span class="req">*</span></label>
         <div class="ac-wrap">
-          <input type="text" id="kelurahan" placeholder="Ketik nama kelurahan..." oninput="cariWilayah(this.value)" autocomplete="off">
+          <input type="text" id="kelurahan" placeholder="Ketik nama kelurahan..." oninput="cariWilayah(this.value);capsW(this)" autocomplete="off">
           <div class="ac-list" id="ac-kel"></div>
         </div>
       </div>
       <div class="row2">
-        <div class="fg"><label>Kecamatan <span class="req">*</span></label><input type="text" id="kecamatan" placeholder=""></div>
-        <div class="fg"><label>Kota/Kabupaten <span class="req">*</span></label><input type="text" id="kota" placeholder=""></div>
+        <div class="fg"><label>Kecamatan <span class="req">*</span></label><input type="text" id="kecamatan" placeholder="" oninput="capsW(this)"></div>
+        <div class="fg"><label>Kota/Kabupaten <span class="req">*</span></label><input type="text" id="kota" placeholder="" oninput="capsW(this)"></div>
       </div>
       <div class="row2">
-        <div class="fg"><label>Provinsi <span class="req">*</span></label><input type="text" id="provinsi" placeholder=""></div>
+        <div class="fg"><label>Provinsi <span class="req">*</span></label><input type="text" id="provinsi" placeholder="" oninput="capsW(this)"></div>
         <div class="fg"><label>Kode Pos</label><input type="text" id="kode_pos" placeholder="Otomatis / isi manual" maxlength="5" inputmode="numeric"></div>
       </div>
       <div class="fg"><label>No. Telepon Rumah <span class="opt">(opsional)</span></label><input type="tel" id="telp_rumah" placeholder="021xxx"></div>
@@ -690,7 +690,7 @@ async function cariWilayah(q) {
   clearTimeout(wilTimer);
   const list = document.getElementById('ac-kel');
   const trimmed = q.trim();
-  if(trimmed.length < 2) { list.classList.remove('show'); return; }
+  if(trimmed.length < 3) { list.classList.remove('show'); return; }
   wilTimer = setTimeout(async () => {
     try {
       let data = [];
@@ -698,15 +698,41 @@ async function cariWilayah(q) {
       if(wilCache[key]) {
         data = wilCache[key];
       } else {
-        // Coba farizdotid
-        const res = await fetch(`https://dev.farizdotid.com/api/daerah/kelurahan?nama=${encodeURIComponent(trimmed)}`).catch(()=>null);
-        if(res && res.ok) {
-          const json = await res.json().catch(()=>({}));
-          data = (json?.daerah||[]).slice(0,10);
+        // API 1: farizdotid
+        try {
+          const res = await fetch(`https://dev.farizdotid.com/api/daerah/kelurahan?nama=${encodeURIComponent(trimmed)}`, {signal: AbortSignal.timeout(5000)});
+          if(res.ok) {
+            const json = await res.json();
+            data = (json?.daerah||[]).slice(0,10);
+          }
+        } catch(e) {}
+
+        // API 2: cahayaqur-an fallback pakai emsifa static
+        if(!data.length) {
+          try {
+            const res2 = await fetch(`https://emsifa.github.io/api-wilayah-indonesia/api/search/villages.json?keyword=${encodeURIComponent(trimmed)}`, {signal: AbortSignal.timeout(5000)});
+            if(res2.ok) {
+              const json2 = await res2.json();
+              data = (Array.isArray(json2)?json2:[]).slice(0,10).map(d=>({
+                nama_kelurahan: d.name,
+                nama_kecamatan: d.district_name,
+                nama_kabupaten_kota: d.regency_name,
+                nama_provinsi: d.province_name,
+                kode_pos: d.postal_code||''
+              }));
+            }
+          } catch(e) {}
         }
+
         wilCache[key] = data;
       }
-      if(!data.length) { list.classList.remove('show'); return; }
+
+      if(!data.length) {
+        list.innerHTML = '<div class="ac-item" style="color:var(--tl);cursor:default">Tidak ditemukan. Isi manual.</div>';
+        list.classList.add('show');
+        return;
+      }
+
       list.innerHTML = data.map(d => {
         const kel  = (d.nama_kelurahan||'').replace(/'/g,"\\'");
         const kec  = (d.nama_kecamatan||'').replace(/'/g,"\\'");
@@ -738,7 +764,11 @@ document.addEventListener('click', e => {
 
 // Helpers
 const gv = id => { const el=document.getElementById(id); return el?(el.value.trim()||null):null; };
-const capsW = el => { el.value = el.value.replace(/(?:^|\s)\S/g, c=>c.toUpperCase()); };
+const capsW = el => {
+  const pos = el.selectionStart;
+  el.value = el.value.replace(/(?:^|\s)\S/g, c => c.toUpperCase());
+  el.setSelectionRange(pos, pos);
+};
 const showErr = (id,msg) => { const el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';el.scrollIntoView({behavior:'smooth',block:'center'});} };
 const hideErr = id => { const el=document.getElementById(id); if(el) el.style.display='none'; };
 const showLd = t => { document.getElementById('ld-txt').textContent=t||'Menyimpan...'; document.getElementById('ld').style.display='flex'; };
